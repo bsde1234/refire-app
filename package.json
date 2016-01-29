@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "private": true,
   "scripts": {
-    "build": "babel src --out-dir lib"
+    "build": "babel src --out-dir lib",
+    "watch": "babel --watch src --out-dir lib"
   },
   "author": "Lari Hoppula",
   "license": "MIT",

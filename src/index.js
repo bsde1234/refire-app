@@ -17,6 +17,8 @@ export { bindActionCreators } from 'redux'
 export { Link, IndexLink, IndexRedirect, IndexRoute, Redirect, Route } from 'react-router'
 export { routeActions } from 'react-router-redux-params'
 
+export { default as bindings } from './components/bindings'
+
 export default function refireApp({ url, bindings, routes, reducers = {} }) {
 
   if (typeof url !== "string") {
