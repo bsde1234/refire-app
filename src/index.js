@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { syncFirebase, firebaseReducer } from 'refire'
+import { syncFirebase, firebaseReducer, firebaseActions } from 'refire'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
@@ -16,6 +16,9 @@ export { connect } from 'react-redux'
 export { bindActionCreators } from 'redux'
 export { Link, IndexLink, IndexRedirect, IndexRoute, Redirect, Route } from 'react-router'
 export { routeActions } from 'react-router-redux-params'
+
+const { USER_AUTHENTICATED, USER_UNAUTHENTICATED } = firebaseActions
+export { USER_AUTHENTICATED, USER_UNAUTHENTICATED }
 
 export { default as bindings } from './components/bindings'
 
