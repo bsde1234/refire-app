@@ -8,6 +8,8 @@ import thunk from 'redux-thunk'
 import { Router, Route, browserHistory } from 'react-router'
 import { syncHistory, syncParams, routeParamsReducer } from 'react-router-redux-params'
 
+import StyleContainer from './components/StyleContainer'
+
 export {
   firebaseToProps, FirebaseLogin, FirebaseOAuth, FirebaseRegistration,
   FirebaseResetPassword, FirebaseWrite, Firebase
@@ -16,11 +18,13 @@ export { connect } from 'react-redux'
 export { bindActionCreators } from 'redux'
 export { Link, IndexLink, IndexRedirect, IndexRoute, Redirect, Route } from 'react-router'
 export { routeActions } from 'react-router-redux-params'
+export { create as createStyles } from 'react-free-style'
 
 const { USER_AUTHENTICATED, USER_UNAUTHENTICATED } = firebaseActions
 export { USER_AUTHENTICATED, USER_UNAUTHENTICATED }
 
 export { default as bindings } from './components/bindings'
+export { default as styles } from './components/styles'
 
 export default function refireApp({ url, bindings, routes, reducers = {} }) {
 
@@ -59,10 +63,14 @@ export default function refireApp({ url, bindings, routes, reducers = {} }) {
 
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={browserHistory}>
-        {routes}
-      </Router>
+      <StyleContainer>
+        <Router history={browserHistory}>
+          {routes}
+        </Router>
+      </StyleContainer>
     </Provider>
     , document.getElementById('app')
   )
+
+  return store
 }
