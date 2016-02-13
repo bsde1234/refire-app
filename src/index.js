@@ -16,7 +16,7 @@ export {
 } from 'refire'
 export { connect } from 'react-redux'
 export { bindActionCreators } from 'redux'
-export { Link, IndexLink, IndexRedirect, IndexRoute, Redirect, Route } from 'react-router'
+export { Link, IndexLink, IndexRedirect, IndexRoute, Redirect, Route, browserHistory, hashHistory } from 'react-router'
 export { routeActions } from 'react-router-redux-params'
 export { create as createStyles } from 'react-free-style'
 
@@ -26,7 +26,14 @@ export { USER_AUTHENTICATED, USER_UNAUTHENTICATED }
 export { default as bindings } from './components/bindings'
 export { default as styles } from './components/styles'
 
-export default function refireApp({ url, bindings, routes, reducers = {} }) {
+export default function refireApp({
+  url,
+  bindings,
+  routes,
+  reducers = {},
+  history = browserHistory,
+  elementId = 'app'
+}) {
 
   if (typeof url !== "string") {
     throw new Error("refire-app: No Firebase url provided in options")
@@ -42,7 +49,7 @@ export default function refireApp({ url, bindings, routes, reducers = {} }) {
 
   const createStoreWithMiddleware = applyMiddleware(
     thunk,
-    syncHistory(browserHistory)
+    syncHistory(history)
   )(createStore)
 
   const store = createStoreWithMiddleware(
@@ -53,7 +60,7 @@ export default function refireApp({ url, bindings, routes, reducers = {} }) {
     })
   )
 
-  syncParams(store, routes, browserHistory)
+  syncParams(store, routes, history)
 
   syncFirebase({
     store: store,
@@ -64,12 +71,12 @@ export default function refireApp({ url, bindings, routes, reducers = {} }) {
   ReactDOM.render(
     <Provider store={store}>
       <StyleContainer>
-        <Router history={browserHistory}>
+        <Router history={history}>
           {routes}
         </Router>
       </StyleContainer>
     </Provider>
-    , document.getElementById('app')
+    , document.getElementById(elementId)
   )
 
   return store
