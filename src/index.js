@@ -31,6 +31,7 @@ export default function refireApp({
   bindings,
   routes,
   reducers = {},
+  middleware = [],
   history = browserHistory,
   elementId = 'app'
 }) {
@@ -48,6 +49,7 @@ export default function refireApp({
   }
 
   const createStoreWithMiddleware = applyMiddleware(
+    ...middleware,
     thunk,
     syncHistory(history)
   )(createStore)
