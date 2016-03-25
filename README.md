@@ -74,7 +74,7 @@ Initializes redux, react-router, react-router-redux-params and refire.
 
 **elementId = 'app'** *DOM element id for your app*
 
-## Components
+## Component wrappers
 
 ### bindings([])
 
@@ -93,6 +93,8 @@ export default bindings(["board", "boardThreads"])(YourComponent)
 
 Wrapper for [react-free-style](https://github.com/blakeembrey/react-free-style), your styles will be automatically inserted to a style tag at app's root level with unique classnames.
 
+Styles can be defined as plain JS objects, this means you can use libraries like [color](https://github.com/Qix-/color) or [prefix-lite](https://github.com/namuol/prefix-lite) to enhance your styles.
+
 ```js
 import React, { Component } from 'react'
 import { styles } from 'refire-app'
@@ -108,9 +110,30 @@ class YourComponent extends Component {
 }
 export default styles({
   container: {
-    padding: "30px 0"
+    padding: "30px 0",
+    background: "#000",
+    color: "#fff"
   }
 }, YourComponent)
+```
+
+You can also allow your components to be easily extended by users, any component wrapped with `styles` will accept `styles` prop to be passed in and those styles will be merged with existing styles.
+
+```js
+import React, { Component } from 'react'
+
+class UserComponent extends Component {
+  render() {
+    // we want more top & bottom padding, other container styles will stay as they were defined in YourComponent
+    return (
+      <div>
+        <YourComponent styles={{container: {padding: "50px 0"} }} />
+      </div>
+    )
+  }
+}
+
+export default UserComponent
 ```
 
 ## Exports
