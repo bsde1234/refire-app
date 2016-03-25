@@ -1,6 +1,6 @@
 {
   "name": "refire-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Opinionated wrapper for quick prototyping with React, Redux and Firebase",
   "main": "lib/index.js",
   "repository": {
