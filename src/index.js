@@ -30,6 +30,7 @@ export default function refireApp({
   url,
   bindings,
   routes,
+  pathParams,
   reducers = {},
   middleware = [],
   history = browserHistory,
@@ -67,7 +68,8 @@ export default function refireApp({
   syncFirebase({
     store: store,
     url: url,
-    bindings: bindings
+    bindings: bindings,
+    pathParams: pathParams
   })
 
   ReactDOM.render(
