@@ -31,6 +31,7 @@ export default function refireApp({
   bindings,
   routes,
   pathParams,
+  onAuth,
   reducers = {},
   middleware = [],
   history = browserHistory,
@@ -69,7 +70,8 @@ export default function refireApp({
     store: store,
     url: url,
     bindings: bindings,
-    pathParams: pathParams
+    pathParams: pathParams,
+    onAuth: onAuth
   })
 
   ReactDOM.render(
