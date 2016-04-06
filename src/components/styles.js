@@ -1,5 +1,6 @@
 import React from 'react'
 import { create } from 'react-free-style'
+import hoistNonReactStatics from 'hoist-non-react-statics'
 
 export default (styles, Component) => {
   const Style = create()
@@ -44,5 +45,8 @@ export default (styles, Component) => {
     }
   }
 
-  return Style.component(StyledComponent)
+  return hoistNonReactStatics(
+    Style.component(StyledComponent),
+    Component
+  )
 }
