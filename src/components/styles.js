@@ -9,7 +9,7 @@ export default (styles, Component) => {
   function createStyles(styleProps) {
     return Object.keys(styleProps || {}).reduce((result, id) => {
       // register global styles when id is "registerRule"
-      if (id === "registerRule") {
+      if (id === ":global") {
         Object.keys(styleProps[id]).forEach((rule) => {
           if (globalStyles[rule]) {
             // remove existing global styles
