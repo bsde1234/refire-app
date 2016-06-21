@@ -91,7 +91,8 @@ const routes = (
 )
 
 refireApp({
-  url,
+  apiKey,
+  projectId,
   bindings: firebaseBindings,
   routes,
   elementId: "root"
@@ -104,7 +105,9 @@ Initializes redux, react-router, react-router-redux-params and refire.
 
 ### options
 
-**url** *Firebase app url*
+**apiKey** *Firebase api key*
+
+**projectId** *Firebase project id*
 
 **bindings** *Refire bindings*
 
@@ -190,7 +193,7 @@ export default UserComponent
 * FirebaseRegistration
 * FirebaseResetPassword
 * FirebaseWrite
-* [Firebase](https://www.npmjs.com/package/firebase)
+* [firebase](https://www.npmjs.com/package/firebase)
 * USER_AUTHENTICATED
 * USER_UNAUTHENTICATED
 

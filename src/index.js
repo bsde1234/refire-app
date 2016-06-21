@@ -12,7 +12,7 @@ import StyleContainer from './components/StyleContainer'
 
 export {
   firebaseToProps, FirebaseLogin, FirebaseLogout, FirebaseOAuth, FirebaseRegistration,
-  FirebaseResetPassword, FirebaseWrite, Firebase
+  FirebaseResetPassword, FirebaseWrite, firebase
 } from 'refire'
 export { connect } from 'react-redux'
 export { bindActionCreators } from 'redux'
@@ -27,7 +27,8 @@ export { default as bindings } from './components/bindings'
 export { default as styles } from './components/styles'
 
 export default function refireApp({
-  url,
+  apiKey,
+  projectId,
   bindings,
   routes,
   pathParams,
@@ -38,8 +39,16 @@ export default function refireApp({
   elementId = 'app'
 }) {
 
-  if (typeof url !== "string") {
-    throw new Error("refire-app: No Firebase url provided in options")
+  if (typeof projectId === "undefined") {
+    throw new Error("refire-app: no projectId provided")
+  }
+
+  if (typeof apiKey === "undefined") {
+    throw new Error("refire-app: no apiKey provided")
+  }
+
+  if (typeof url !== "undefined") {
+    throw new Error("refire-app: url is deprecated in options, use projectId & apiKey instead")
   }
 
   if (typeof bindings === "undefined") {
@@ -67,8 +76,9 @@ export default function refireApp({
   syncParams(store, routes, history)
 
   syncFirebase({
+    apiKey: apiKey,
+    projectId: projectId,
     store: store,
-    url: url,
     bindings: bindings,
     pathParams: pathParams,
     onAuth: onAuth
