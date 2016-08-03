@@ -2,56 +2,100 @@
 
 > Opinionated wrapper for quick prototyping with React, Redux and Firebase
 
-## Usage
+## Quick start
+
+1. Install [create-react-app](https://github.com/facebookincubator/create-react-app) with `npm install -g create-react-app`
+2. Generate your React app, e.g. `create-react-app my-app` and `cd my-app`
+3. Install `refire-app` with `npm install -S refire-app`
+4. Paste following code over previous content in `src/index.js` and run the app with `npm start`
 
 ```js
-import refireApp, { IndexRoute, Route } from 'refire-app'
+import React from 'react'
+import refireApp, { IndexRoute, Route, Link, bindings, styles } from 'refire-app'
 
-import App from './components/App'
-import Index from './components/Index'
-import Board from './components/Board'
-import Profile from './components/Profile'
+const nameStyles = { textTransform: "capitalize" }
 
-const url = 'https://yourapp.firebaseio.com/'
+const App = (props) => (<div>{props.children}</div>)
 
-const bindings = {
-  "board": {
+const Dinosaurs = styles(
+  { name: nameStyles, container: { listStyle: "none" } },
+  bindings([ "dinosaurs" ])(({ dinosaurs: dinos, styles }) => {
+    if (!dinos) return (<div>Loading...</div>)
+    const { value: dinosaurs = [] } = dinos || {}
+    return (
+      <div>
+        <h1>Dinosaurs</h1>
+        <ul className={styles.container}>
+        {
+          dinosaurs.map(({key}) => (
+            <li key={key} className={styles.name}>
+              <Link to={`/${key}`}>{key}</Link>
+            </li>
+          ))
+        }
+        </ul>
+      </div>
+    )
+  })
+)
+
+const Dinosaur = styles(
+  { name: nameStyles },
+  bindings([ "dinosaur", "score" ])(({ dinosaur: dino, score: dinoScore, styles }) => {
+    if (!dino || !dinoScore) return (<div>Loading...</div>)
+    const { value: dinosaur = {}, key: name } = dino || {}
+    const { value: score = {} } = dinoScore || {}
+    return (
+      <div>
+        <h1 className={styles.name}>{name}</h1>
+        <h2>{score} points</h2>
+        <ul>
+          <li>Order: {dinosaur.order}</li>
+          <li>Appeared: {dinosaur.appeared} years ago</li>
+          <li>Vanished: {dinosaur.vanished} years ago</li>
+          <li>Height: {dinosaur.height} m</li>
+          <li>Length: {dinosaur.length} m</li>
+          <li>Weight: {dinosaur.weight} kg</li>
+        </ul>
+        <Link to="/">Back to dinosaurs list</Link>
+      </div>
+    )
+  })
+)
+
+const url = 'https://dinosaur-facts.firebaseio.com/'
+
+const firebaseBindings = {
+  "dinosaurs": { type: "Array", path: "dinosaurs" },
+  "dinosaur": {
     type: "Object",
     path: (state) => {
-      return state.routing.params.boardId
-        ? `boards/${state.routing.params.boardId}`
-        : null    
+      const { dinosaurId } = state.routing.params
+      return dinosaurId ? `dinosaurs/${dinosaurId}` : null
     }
   },
-  "boardThreads": {
-    type: "Array",
-    path: (state) => {
-      return state.routing.params.boardId
-        ? `boards/${state.routing.params.boardId}/threads`
-        : null
-    },
-    populate: (key) => `threads/${key}`
-  },
-  "profile": {
+  "score": {
     type: "Object",
     path: (state) => {
-      return state.routing.params.uid
-        ? `users/${state.routing.params.uid}`
-        : null
+      const { dinosaurId } = state.routing.params
+      return dinosaurId ? `scores/${dinosaurId}` : null
     }
   }
 }
 
 const routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={Index} />
-    <Route path="board/:boardId" component={Board} />
-    <Route path="profile/:uid" component={Profile} />
+    <IndexRoute component={Dinosaurs} />
+    <Route path=":dinosaurId" component={Dinosaur} />
   </Route>
 )
 
-refireApp({ url, bindings, routes })
-
+refireApp({
+  url,
+  bindings: firebaseBindings,
+  routes,
+  elementId: "root"
+})
 ```
 
 ## refireApp(options={})
