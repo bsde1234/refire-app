@@ -63,7 +63,8 @@ const Dinosaur = styles(
   })
 )
 
-const url = 'https://dinosaur-facts.firebaseio.com/'
+const apiKey = 'your-api-key-from-firebase-console-not-needed-in-this-example'
+const projectId = 'dinosaur-facts'
 
 const firebaseBindings = {
   "dinosaurs": { type: "Array", path: "dinosaurs" },
