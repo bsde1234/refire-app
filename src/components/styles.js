@@ -1,65 +1,53 @@
 import React from 'react'
-import { create } from 'react-free-style'
+import { wrap } from 'react-free-style'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 
-export default (styles, Component) => {
-  const Style = create()
-  const globalStyles = {}
-
-  function createStyles(styleProps) {
-    return Object.keys(styleProps || {}).reduce((result, id) => {
-      // register global styles when id is "registerRule"
-      if (id === ":global") {
-        Object.keys(styleProps[id]).forEach((rule) => {
-          if (globalStyles[rule]) {
-            // remove existing global styles
-            const existing = Object.keys(Style._children).filter((childId) => {
-              return Style._children[childId].rule === rule
-            }).forEach((ruleId) => {
-              Style.remove(Style._children[ruleId])
-            })
-          }
-          // merge new global styles with existing styles
-          globalStyles[rule] = {...globalStyles[rule], ...styleProps[id][rule]}
-          Style.registerRule(rule, globalStyles[rule])
-        })
-        return result
-      } else {
-        return {
-          ...result,
-          [id]: Style.registerStyle(styleProps[id])
-        }
-      }
-    }, {})
-  }
-
-  function concatenateClassnames(componentStyles, userStyles={}) {
-    return Object.keys(componentStyles).reduce((result, id) => {
+function createStyles(Style, styleProps) {
+  return Object.keys(styleProps || {}).reduce((result, id) => {
+    // register global style rules when id is ":global"
+    if (id === ":global") {
+      Object.keys(styleProps[id]).forEach((rule) => {
+        Style.registerRule(rule, styleProps[id][rule])
+      })
+      return result
+    } else {
       return {
         ...result,
-        [id]: [componentStyles[id], userStyles[id]].filter(Boolean).join(" ")
+        [id]: Style.registerStyle(styleProps[id])
       }
-    }, {})
-  }
+    }
+  }, {})
+}
 
-  const stylesProp = createStyles(styles)
+function concatenateClassnames(componentStyles, userStyles={}) {
+  return Object.keys(componentStyles).reduce((result, id) => {
+    return {
+      ...result,
+      [id]: [componentStyles[id], userStyles[id]].filter(Boolean).join(" ")
+    }
+  }, {})
+}
+
+export default (styles, Component) => {
 
   class StyledComponent extends React.Component {
 
     constructor(props) {
       super(props)
-      this.state = { userStyles: {} }
+      this.state = { styles: {}, userStyles: {} }
     }
 
     componentWillMount() {
-      if (this.props.styles) {
-        this.setState({userStyles: createStyles(this.props.styles)})
-      }
+      this.setState({styles: createStyles(this.context.freeStyle, styles)}, () => {
+        if (this.props.styles) {
+          this.setState({userStyles: createStyles(this.context.freeStyle, this.props.styles)})
+        }
+      })
     }
 
     componentWillReceiveProps(nextProps) {
       if (nextProps.styles !== this.props.styles) {
-        this.setState({userStyles: createStyles(nextProps.styles)})
+        this.setState({userStyles: createStyles(this.context.freeStyle, nextProps.styles)})
       }
     }
 
@@ -67,14 +55,20 @@ export default (styles, Component) => {
       return (
         <Component
           {...this.props}
-          styles={concatenateClassnames(stylesProp, this.state.userStyles)}
+          styles={concatenateClassnames(this.state.styles, this.state.userStyles)}
         />
       )
     }
+
+  }
+
+  StyledComponent.contextTypes = {
+    freeStyle: React.PropTypes.object.isRequired
   }
 
   return hoistNonReactStatics(
-    Style.component(StyledComponent),
+    wrap(StyledComponent),
     Component
   )
+
 }

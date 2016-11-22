@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { firebaseToProps } from 'refire'
-import isArray from 'lodash/lang/isArray'
+import isArray from 'lodash/isArray'
 
 function generateProps(storeIds) {
   return (state) => {
