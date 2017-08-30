@@ -21,12 +21,13 @@
     "hoist-non-react-statics": "^1.0.5",
     "lodash": "^4.16.6",
     "react-free-style": "^4.0.0",
-    "react-redux": "^4.4.0",
-    "react-router": "^2.0.0",
-    "react-router-redux-params": "^1.0.0",
-    "redux": "^3.3.1",
-    "redux-thunk": "^2.0.1",
-    "refire": "^2.0.3"
+    "react-redux": "^5.0.6",
+    "react-router": "^3.0.5",
+    "react-router-redux-params": "^2.0.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "refire": "^3.0.0",
+    "refire-react": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",

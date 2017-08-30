@@ -10,10 +10,11 @@ import { syncHistory, syncParams, routeParamsReducer } from 'react-router-redux-
 
 import StyleContainer from './components/StyleContainer'
 
+export { firebase } from 'refire'
 export {
   firebaseToProps, FirebaseLogin, FirebaseLogout, FirebaseOAuth, FirebaseRegistration,
-  FirebaseResetPassword, FirebaseWrite, firebase
-} from 'refire'
+  FirebaseResetPassword, FirebaseWrite
+} from 'refire-react'
 export { connect } from 'react-redux'
 export { bindActionCreators } from 'redux'
 export { Link, IndexLink, IndexRedirect, IndexRoute, Redirect, Route, browserHistory, hashHistory } from 'react-router'
