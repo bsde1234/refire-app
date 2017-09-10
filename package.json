@@ -1,7 +1,8 @@
 {
   "name": "refire-app",
   "version": "2.1.0",
-  "description": "Opinionated wrapper for quick prototyping with React, Redux and Firebase",
+  "description":
+    "Opinionated wrapper for quick prototyping with React, Redux and Firebase",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -26,8 +27,8 @@
     "react-router-redux-params": "^2.0.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "refire": "^3.0.0",
-    "refire-react": "^1.0.0"
+    "refire": "^3.1.0",
+    "refire-react": "^1.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
