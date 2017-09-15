@@ -88,22 +88,24 @@ export default function refireApp({
     syncHistory(history)
   )(createStore)
 
+  const componentBindings = React.isValidElement(bindings)
+  const syncBindings = componentBindings ? {} : bindings
+
   const store = createStoreWithMiddleware(
     combineReducers({
       routing: routeParamsReducer,
-      firebase: firebaseReducer(bindings),
+      firebase: firebaseReducer(syncBindings),
       ...reducers
     })
   )
 
-  const componentBindings = React.isValidElement(bindings)
   syncParams(store, routes, history)
 
   const sync = syncFirebase({
     apiKey: apiKey,
     projectId: projectId,
     store: store,
-    bindings: componentBindings ? {} : bindings,
+    bindings: syncBindings,
     pathParams: pathParams,
     onAuth: onAuth
   })
